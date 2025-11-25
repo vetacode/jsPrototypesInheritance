@@ -39,3 +39,53 @@ let tabby = {
 kucing.jalan(); //Bisa jalan dong
 console.log(tabby.ngeong); //true
 tabby.jalan(); //Bisa jalan dong
+
+//THE DIFFERENCE
+// __proto__ is the getter/setter for [[prototype]]
+//New Syntax for __proto__: Object.getPrototypeOf/Object.setPrototypeOf
+
+//Writing doesn’t use prototype
+//We can directly assign its own method
+let animal2 = {
+  eats: true,
+  walk() {
+    /* this method won't be used by rabbit */
+  },
+};
+
+let rabbit2 = {
+  __proto__: animal,
+};
+
+rabbit2.walk = function () {
+  console.log('Rabbit! Bounce-bounce!');
+};
+
+rabbit2.walk(); // Rabbit! Bounce-bounce!
+
+//How to use setters and trigger it
+let user = {
+  name: 'John',
+  surname: 'Smith',
+
+  set fullName(value) {
+    [this.name, this.surname] = value.split(' ');
+  },
+
+  get fullName() {
+    return `${this.name} ${this.surname}`;
+  },
+};
+
+let admin = {
+  __proto__: user,
+  isAdmin: true,
+};
+
+console.log(admin.fullName); // John Smith (*)
+
+// setter triggers!
+admin.fullName = 'Alice Cooper'; // (**)
+
+console.log(admin.fullName); // Alice Cooper, state of admin modified
+console.log(user.fullName); // John Smith, state of user protected
