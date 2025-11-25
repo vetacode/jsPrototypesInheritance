@@ -85,7 +85,33 @@ let admin = {
 console.log(admin.fullName); // John Smith (*)
 
 // setter triggers!
-admin.fullName = 'Alice Cooper'; // (**)
+admin.fullName = 'Alice Cooper'; // (**) ==> 'This' is belongs to admin, NOT user
 
 console.log(admin.fullName); // Alice Cooper, state of admin modified
 console.log(user.fullName); // John Smith, state of user protected
+
+//The value of 'THIS'
+//No matter where the method is found: in an object or its prototype.
+//In a method call, 'this' is always the object before the dot.
+// animal has methods
+let animal3 = {
+  walk() {
+    if (!this.isSleeping) {
+      alert(`I walk`);
+    }
+  },
+  sleep() {
+    this.isSleeping = true;
+  },
+};
+
+let rabbit3 = {
+  name: 'White Rabbit',
+  __proto__: animal3,
+};
+
+// modifies rabbit3.isSleeping
+rabbit3.sleep();
+
+console.log(rabbit3.isSleeping); // true
+console.log(animal3.isSleeping); // undefined (no such property in the prototype)
