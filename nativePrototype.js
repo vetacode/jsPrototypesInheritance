@@ -325,3 +325,16 @@ WeakMap.prototype
 WeakSet.prototype
 Iterator prototypes
 */
+
+//Changing native prototypes: NOT RECOMMENDED, CONSIDERED BAD IDEA
+//In modern programming, there is only one case where modifying native prototypes is approved. That’s polyfilling.
+
+//Borrowing from prototypes
+let obj2 = {
+  0: 'Hello',
+  1: 'world!',
+  length: 2,
+};
+
+obj2.join = Array.prototype.join;
+console.log(obj2.join(',')); // Hello,world!
