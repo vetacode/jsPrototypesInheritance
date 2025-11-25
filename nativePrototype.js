@@ -107,3 +107,117 @@ console.log(Object.prototype.toString == obj.__proto__.toString);
            │                       (your {} object)                        │
            └───────────────────────────────────────────────────────────────┘
 */
+
+/*
+                                           null
+                                            ▲
+                                            │
+                 ┌─────────────────────────────────────────────────────────────┐
+                 │                      Object.prototype                      │
+                 │  (owns: toString(), valueOf(), hasOwnProperty(), isPrototypeOf)
+                 └─────────────────────────────────────────────────────────────┘
+                                      ▲    ▲    ▲    ▲
+                                      │    │    │    │
+                 ┌────────────────────┘    │    │    └────────────────────┐
+                 │                         │    │                         │
+     ┌────────────────────────┐   ┌────────────────────────┐   ┌────────────────────────┐
+     │      Array.prototype   │   │   Function.prototype   │   │     Number.prototype   │
+     │ (owns: slice(), map(), │   │ (owns: call(), apply(),│   │ (owns: toFixed(), etc) │
+     │ forEach(), push(), ...)│   │  bind(), toString()*)  │   │                        │
+     └────────────────────────┘   └────────────────────────┘   └────────────────────────┘
+                 ▲                           ▲                            ▲
+                 │                           │                            │
+        [1,2,3] (array instance)   function f(){} (function)        5 (number primitive)
+
+
+Notes:
+- `Function.prototype.toString` is the implementation used when you call `toString()` on any function (e.g. `Object`, `Function`, or user-defined functions).
+- `Object.prototype.toString` is the implementation used when calling `toString()` on ordinary object instances (including arrays, numbers when boxed, plain objects, etc.).
+
+
+More complete (showing constructors and constructor.__proto__ links):
+
+```
+
+```
+                                  null
+                                   ▲
+                                   │
+             ┌─────────────────────────────────────────────────────────────┐
+             │                      Object.prototype                      │
+             └─────────────────────────────────────────────────────────────┘
+                                   ▲
+                                   │  (Object.prototype.constructor === Object)
+                                   │
+             ┌─────────────────────────────────────────────────────────────┐
+             │                           Object                            │
+             │              (constructor function for objects)             │
+             └─────────────────────────────────────────────────────────────┘
+                                   ▲
+                                   │  (Object.__proto__ === Function.prototype)
+                                   │
+             ┌─────────────────────────────────────────────────────────────┐
+             │                        Function.prototype                    │
+             │ (call, apply, bind, toString() for functions — *actual owner*) │
+             └─────────────────────────────────────────────────────────────┘
+                                   ▲
+                                   │
+             ┌─────────────────────────────────────────────────────────────┐
+             │                          Function                             │
+             │                (constructor for all functions)               │
+             └─────────────────────────────────────────────────────────────┘
+```
+
+Other built-ins (each inherits from Object.prototype):
+
+String.prototype    → (owns: charAt, slice, indexOf, trim, ...)
+Boolean.prototype   → (owns: valueOf)
+Number.prototype    → (owns: toFixed, toExponential, ...)
+Array.prototype     → (owns: slice, push, pop, map, filter, ...)
+Date.prototype      → (owns: getFullYear, toISOString, ...)
+RegExp.prototype    → (owns: exec, test, ...)
+Error.prototype     → (owns: name, message when instantiated)
+Map.prototype       → (owns: get, set, has, ...)
+Set.prototype       → (owns: add, has, delete, ...)
+WeakMap.prototype   → (owns: get, set, has)
+WeakSet.prototype   → (owns: add, has, delete)
+Promise.prototype   → (owns: then, catch, finally)
+
+Key lookups & examples:
+
+* `obj = {}`
+
+  * `obj.__proto__ === Object.prototype`
+  * `obj.toString === Object.prototype.toString`
+
+* `arr = [1,2,3]`
+
+  * `arr.__proto__ === Array.prototype`
+  * `arr.__proto__.__proto__ === Object.prototype`
+  * `arr.slice === Array.prototype.slice`
+
+* `function f(){}`
+
+  * `f.__proto__ === Function.prototype`
+  * `f.__proto__.__proto__ === Object.prototype`
+  * `f.toString === Function.prototype.toString`
+
+* `Object` (the constructor function):
+
+  * `Object.__proto__ === Function.prototype`
+  * `Object.prototype` is different: it's the prototype for instances created by `new Object()`
+  * `Object.toString === Function.prototype.toString`  // inherited
+
+Quick reference (expressed as equality checks):
+
+* `obj.__proto__ === Object.prototype`  // true for `{}`
+* `arr.__proto__ === Array.prototype`   // true for `[]`
+* `f.__proto__ === Function.prototype`  // true for functions
+* `Object.__proto__ === Function.prototype` // true, because Object is a function
+* `Function.__proto__ === Function.prototype` // true (Function is a function)
+* `Object.prototype.__proto__ === null` // true
+
+```
+
+If you'd like, I can convert this into a prettier ASCII art (with box-drawing characters) or export as a markdown file/Notion-ready snippet.
+*/
