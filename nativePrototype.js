@@ -15,3 +15,11 @@ console.log(
 console.log(Object.prototype.toString == obj.toString);
 console.log(obj.toString == obj.__proto__.toString);
 console.log(obj.toString == Object.prototype.toString);
+console.log(Object.toString == Object.prototype.toString);
+console.log(Object.toString == obj.__proto__.constructor.toString);
+
+//Object == obj.__proto__.constructor !== Function.prototype
+console.log(Object == obj.__proto__.constructor);
+console.log(Object.__proto__ == Function.prototype);
+console.log(Object.prototype == obj.__proto__);
+console.log(Object.prototype.toString == obj.__proto__.toString);
