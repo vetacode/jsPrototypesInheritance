@@ -143,3 +143,14 @@ console.log(car.type);
 let car2 = new car.constructor('Volvo');
 console.log(Car.prototype.constructor == Car);
 console.log(car2.type);
+
+function User(name) {
+  this.name = name;
+}
+User.prototype = {}; // (*)
+
+let user = new User('John');
+let user2 = new user.constructor('Pete');
+
+console.log(User.prototype.constructor == User); // false
+console.log(user2.name); // undefined
