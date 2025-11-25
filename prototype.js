@@ -293,3 +293,63 @@ rabbit5.eat();
 console.log(rabbit5.full);
 console.log(animal5.full);
 console.log(rabbit5.eat());
+
+/**TASK 4
+ * Why are both hamsters full?
+importance: 5
+We have two hamsters: speedy and lazy inheriting from the general hamster object.
+
+When we feed one of them, the other one is also full. Why? How can we fix it?
+
+let hamster = {
+  stomach: [],
+
+  eat(food) {
+    this.stomach.push(food);
+  }
+};
+
+let speedy = {
+  __proto__: hamster
+};
+
+let lazy = {
+  __proto__: hamster
+};
+
+// This one found the food
+speedy.eat("apple");
+alert( speedy.stomach ); // apple
+
+// This one also has it, why? fix please.
+alert( lazy.stomach ); // apple
+ */
+let hamster = {
+  stomach: [],
+
+  eat(food) {
+    this.stomach.push(food);
+    //SOLUTION 1
+    // assign to this.stomach instead of this.stomach.push
+    // this.stomach = [food]; //it will makes separate stomach []
+  },
+};
+
+let speedy = {
+  //SOLUTION 2
+  stomach: [],
+  __proto__: hamster,
+};
+
+let lazy = {
+  //SOLUTION 2
+  stomach: [],
+  __proto__: hamster,
+};
+
+// This one found the food
+speedy.eat('apple');
+console.log(speedy.stomach); // apple
+
+// This one also has it, why? fix please.
+console.log(lazy.stomach); // [] fixed
