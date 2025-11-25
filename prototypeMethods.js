@@ -92,3 +92,43 @@ for (let key in dictionary) {
 
 // your toString in action
 console.log(dictionary); // "apple,__proto__"
+
+/**TASK 2
+ * The difference between calls
+importance: 5
+Let’s create a new rabbit object:
+
+function Rabbit(name) {
+  this.name = name;
+}
+Rabbit.prototype.sayHi = function() {
+  alert(this.name);
+};
+
+let rabbit = new Rabbit("Rabbit");
+These calls do the same thing or not?
+
+rabbit.sayHi();
+Rabbit.prototype.sayHi();
+Object.getPrototypeOf(rabbit).sayHi();
+rabbit.__proto__.sayHi();
+ */
+
+function Rabbit2(name) {
+  this.name = name;
+}
+Rabbit2.prototype.sayHi = function () {
+  console.log(this.name);
+};
+
+let rabbit2 = new Rabbit2('Rabbit2');
+console.log(rabbit2);
+console.log(rabbit2.__proto__.sayHi == Rabbit2.prototype.sayHi);
+
+rabbit2.sayHi();
+Rabbit2.prototype.sayHi();
+Object.getPrototypeOf(rabbit2).sayHi();
+rabbit2.__proto__.sayHi();
+
+//call prototype method but force it to use the instance as this
+Rabbit2.prototype.sayHi.call(rabbit2); // prints "Rabbit2"
