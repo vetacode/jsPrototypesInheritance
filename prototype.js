@@ -128,6 +128,7 @@ let burung = {
   __proto__: hewan2,
 };
 
+//OBJECT.KEYS, OBJECT.VALUES will ignore inherited props
 console.log(Object.keys(burung)); //cuma return array of burung props
 
 for (let props in burung) {
