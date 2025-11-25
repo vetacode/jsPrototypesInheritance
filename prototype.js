@@ -252,3 +252,44 @@ console.log(table.money); // undefined
 
 console.log(head.glasses);
 console.log(pockets.glasses); //there is no difference in performance in modern engines
+
+/**TASK 3
+ * Where does it write?
+importance: 5
+We have rabbit inheriting from animal.
+
+If we call rabbit.eat(), which object receives the full property: animal or rabbit?
+
+let animal = {
+  eat() {
+    this.full = true;
+  }
+};
+
+let rabbit = {
+  __proto__: animal
+};
+
+rabbit.eat();
+ */
+
+let animal5 = {
+  eat() {
+    this.full = true;
+  },
+};
+
+let rabbit5 = {
+  __proto__: animal5,
+};
+
+rabbit5.eat();
+console.log(rabbit5.full);
+console.log(animal5.full);
+// animal5.eat();
+console.log(animal5.full);
+// console.log(animal5.eat());
+rabbit5.eat();
+console.log(rabbit5.full);
+console.log(animal5.full);
+console.log(rabbit5.eat());
