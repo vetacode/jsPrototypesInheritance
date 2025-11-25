@@ -295,3 +295,33 @@ Quick reference (expressed as equality checks):
 
 If you'd like, I can convert this into a prettier ASCII art (with box-drawing characters) or export as a markdown file/Notion-ready snippet.
 */
+
+//actual application
+let arr = [1, 2, 3, 4];
+console.log(arr.toString());
+console.log(Array.prototype.toString === Object.prototype.toString); // false: Array has own toString() so it overrides Object toString()
+
+/*
+Summary of who overrides toString()
+
+* Overrides (defines its own version):
+Array.prototype
+Function.prototype
+Number.prototype
+String.prototype
+Boolean.prototype
+Date.prototype
+RegExp.prototype
+Error.prototype
+TypedArray.prototype (all types)
+Promise.prototype
+
+* Uses Object.prototype.toString:
+Symbol.prototype
+BigInt.prototype
+Map.prototype
+Set.prototype
+WeakMap.prototype
+WeakSet.prototype
+Iterator prototypes
+*/
