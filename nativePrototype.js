@@ -338,3 +338,28 @@ let obj2 = {
 
 obj2.join = Array.prototype.join;
 console.log(obj2.join(',')); // Hello,world!
+
+/**TASK 1
+ * Add method "f.defer(ms)" to functions
+importance: 5
+Add to the prototype of all functions the method defer(ms), that runs the function after ms milliseconds.
+
+After you do it, such code should work:
+
+function f() {
+  alert("Hello!");
+}
+
+f.defer(1000); // shows "Hello!" after 1 second
+ */
+
+Function.prototype.defer = function (ms) {
+  setTimeout(this, ms);
+  console.log(this == f); //true
+};
+
+function f() {
+  console.log('Hello!');
+}
+
+f.defer(1000); // shows "Hello!" after 1 sec
