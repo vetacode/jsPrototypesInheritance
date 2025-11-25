@@ -115,3 +115,21 @@ rabbit3.sleep();
 
 console.log(rabbit3.isSleeping); // true
 console.log(animal3.isSleeping); // undefined (no such property in the prototype)
+//NOTES: methods are shared, but the object state is not.
+
+//for…in loop to iterates over inherited properties
+let hewan2 = {
+  nafas: true,
+  tidur: true,
+};
+
+let burung = {
+  terbang: true,
+  __proto__: hewan2,
+};
+
+console.log(Object.keys(burung)); //cuma return array of burung props
+
+for (let props in burung) {
+  console.log(props); //terbang, nafas, tidur. Pake for..in loop akan dapet semua string props dari obj dan prototype nya
+}
