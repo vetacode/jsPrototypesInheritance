@@ -133,3 +133,26 @@ console.log(Object.keys(burung)); //cuma return array of burung props
 for (let props in burung) {
   console.log(props); //terbang, nafas, tidur. Pake for..in loop akan dapet semua string props dari obj dan prototype nya
 }
+
+//How to FILTER out INHERITED props from obj own props
+//using: obj.hasOwnProperty(key) ==> will return TRUE or FALSE
+
+let buah = {
+  berair: true,
+  kulit: true,
+};
+
+let pisang = {
+  pulen: true,
+  __proto__: buah,
+};
+
+for (let props in pisang) {
+  let isOwn = pisang.hasOwnProperty(props);
+
+  if (isOwn) {
+    console.log(`Own: ${props}: ${pisang[props]}`); //Own: pulen
+  } else {
+    console.log(`inherited: ${props}`); //inherited: berair, kulit
+  }
+}
