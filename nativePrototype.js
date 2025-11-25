@@ -12,6 +12,7 @@ console.log(obj.__proto__ == Object.prototype);
 console.log(obj.__proto__.toString == Object.prototype.toString);
 console.log(obj.__proto__.constructor == Object);
 console.log(obj.__proto__.constructor.toString == Object.toString);
+console.log(obj.prototype == Object.prototype);
 
 console.log(Object.toString == Object.prototype.constructor.toString);
 console.log(Object.toString == obj.__proto__.constructor.toString);
@@ -21,13 +22,28 @@ console.log(Object == obj.__proto__.constructor);
 console.log(Object.__proto__ == Function.__proto__);
 console.log(Function.__proto__ == Function.prototype);
 console.log(Object.__proto__ == Function.prototype);
-console.log(obj.prototype == Object.prototype);
+
+console.log(
+  Object.prototype.constructor.constructor.__proto__ == Function.prototype
+);
+console.log(
+  Object.prototype.constructor.constructor.__proto__.__proto__ ==
+    Object.prototype
+);
+console.log(
+  Object.prototype.constructor.constructor.__proto__.__proto__.__proto__ == null
+);
+console.log(Object.prototype.__proto__ == null);
 
 console.log(Function == Object.constructor);
 console.log(Object.prototype == obj.__proto__);
 console.log(Object.prototype.toString == obj.__proto__.toString);
 
 /**
+ *                                                 Null
+ *                                                  |
+ *                                          Object.prototype                           
+ *                                                  |
                                       ┌──────────────────────────────┐
                                       │        Function.prototype     │
                                       │  (prototype of all functions) │
@@ -62,50 +78,108 @@ console.log(Object.prototype.toString == obj.__proto__.toString);
                          └──────────────────────────────────────────────────┘
  */
 /**
-                                       null
-                                        ▲
-                                        │
-           ┌───────────────────────────────────────────────────────────────┐
-           │                      Function.prototype                       │
-           │---------------------------------------------------------------│
-           │  toString()   ← REAL location of toString for ALL FUNCTIONS   │
-           │  call()                                                      │
-           │  apply()                                                     │
-           └───────────────────────────────────────────────────────────────┘
-                                        ▲
-                                        │ [[Prototype]]
-                                        │
-           ┌───────────────────────────────────────────────────────────────┐
-           │                           Function                            │
-           │---------------------------------------------------------------│
-           │  prototype → Function.prototype                               │
-           │  inherits toString() from Function.prototype   ← Inherited    │
-           └───────────────────────────────────────────────────────────────┘
-                                        ▲
-                                        │ [[Prototype]]
-                                        │
-           ┌───────────────────────────────────────────────────────────────┐
-           │                             Object                             │
-           │---------------------------------------------------------------│
-           │  prototype → Object.prototype                                 │
-           │  inherits toString() from Function.prototype   ← Inherited    │
-           └───────────────────────────────────────────────────────────────┘
-                                        ▲
-                                        │ [[Prototype]]
-                                        │
-           ┌───────────────────────────────────────────────────────────────┐
-           │                       Object.prototype                        │
-           │---------------------------------------------------------------│
-           │  toString()  ← REAL location of toString for OBJECT INSTANCES │
-           │  hasOwnProperty()                                             │
-           └───────────────────────────────────────────────────────────────┘
-                                        ▲
-                                        │ [[Prototype]]
-                                        │
-           ┌───────────────────────────────────────────────────────────────┐
-           │                             obj                               │
-           │                       (your {} object)                        │
-           └───────────────────────────────────────────────────────────────┘
+                                        null
+                                    ▲
+                                    │ [[Prototype]]
+                                    │
+                           ┌──────────────────┐
+                           │  Object.prototype│
+                           │  toString()      │  ← original toString
+                           └──────────────────┘
+                 ▲                ▲                        ▲
+                 │ [[Prototype]]  │ [[Prototype]]          │ [[Prototype]]
+                 │                │                        │
+
+ ┌──────────────────────┐   ┌──────────────────────┐   ┌──────────────────────┐
+ │  Array.prototype     │   │ Function.prototype   │   │ Number.prototype     │
+ │  toString()  (✗)     │   │ toString()  (✗)      │   │ toString()  (✗)      │
+ └──────────────────────┘   └──────────────────────┘   └──────────────────────┘
+          ▲                           ▲                          ▲
+          │ [[Prototype]]             │ [[Prototype]]            │ [[Prototype]]
+          │                           │                          │
+   ┌────────────┐             ┌──────────────────┐            ┌──────────┐
+   │ [1,2,3]    │             │ function f() {}  │            │   5      │
+   └────────────┘             └──────────────────┘            └──────────┘
+
+
+
+ ┌──────────────────────────┐
+ │  Symbol.prototype        │  (✓ inherits Object.prototype.toString)
+ └──────────────────────────┘
+               ▲
+               │ [[Prototype]]
+               │
+        ┌───────────┐
+        │ Symbol()  │
+        └───────────┘
+
+
+ ┌──────────────────────────┐
+ │  BigInt.prototype        │  (✓ inherits Object.prototype.toString)
+ └──────────────────────────┐
+               ▲
+               │ [[Prototype]]
+               │
+        ┌───────────┐
+        │  10n      │
+        └───────────┘
+
+
+ ┌──────────────────────────┐
+ │  Map.prototype           │  (✓ inherits Object.prototype.toString)
+ └──────────────────────────┘
+               ▲
+               │ [[Prototype]]
+               │
+         ┌──────────┐
+         │ new Map()│
+         └──────────┘
+
+
+ ┌──────────────────────────┐
+ │  Set.prototype           │  (✓ inherits Object.prototype.toString)
+ └──────────────────────────┘
+               ▲
+               │ [[Prototype]]
+               │
+         ┌──────────┐
+         │ new Set()│
+         └──────────┘
+
+
+
+ ┌──────────────────────────┐
+ │  Date.prototype          │  (✗ overrides toString)
+ └──────────────────────────┘
+               ▲
+               │ [[Prototype]]
+               │
+         ┌──────────────┐
+         │ new Date()   │
+         └──────────────┘
+
+
+ ┌──────────────────────────┐
+ │  RegExp.prototype        │  (✗ overrides toString)
+ └──────────────────────────┘
+               ▲
+               │ [[Prototype]]
+               │
+         ┌──────────────┐
+         │ /abc/        │
+         └──────────────┘
+
+
+ ┌──────────────────────────┐
+ │ Error.prototype          │  (✗ overrides toString)
+ └──────────────────────────┘
+               ▲
+               │ [[Prototype]]
+               │
+         ┌──────────────┐
+         │ new Error()  │
+         └──────────────┘
+
 */
 
 /*
