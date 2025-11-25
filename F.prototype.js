@@ -42,3 +42,81 @@ let rabbit3 = new Rabbit3('White Rabbit3');
 let rabbit4 = new rabbit3.constructor('Black Rabbit3');
 console.log(rabbit3);
 console.log(rabbit4);
+
+/**TASK 1
+ * Changing "prototype"
+importance: 5
+In the code below we create new Rabbit, and then try to modify its prototype.
+
+In the start, we have this code:
+
+function Rabbit() {}
+Rabbit.prototype = {
+  eats: true
+};
+
+let rabbit = new Rabbit();
+
+alert( rabbit.eats ); // true
+We added one more string (emphasized). What will alert show now?
+
+function Rabbit() {}
+Rabbit.prototype = {
+  eats: true
+};
+
+let rabbit = new Rabbit();
+
+Rabbit.prototype = {};
+
+alert( rabbit.eats ); // TRUE
+…And if the code is like this (replaced one line)?
+
+function Rabbit() {}
+Rabbit.prototype = {
+  eats: true
+};
+
+let rabbit = new Rabbit();
+
+Rabbit.prototype.eats = false;
+
+alert( rabbit.eats ); // FALSE
+And like this (replaced one line)?
+
+function Rabbit() {}
+Rabbit.prototype = {
+  eats: true
+};
+
+let rabbit = new Rabbit();
+
+delete rabbit.eats;
+
+alert( rabbit.eats ); // TRUE
+The last variant:
+
+function Rabbit() {}
+Rabbit.prototype = {
+  eats: true
+};
+
+let rabbit = new Rabbit();
+
+delete Rabbit.prototype.eats;
+
+alert( rabbit.eats ); // UNDEFINED
+ */
+
+function Rabbit2() {}
+Rabbit2.prototype = {
+  eats: true,
+};
+
+let rabbit2 = new Rabbit2();
+
+// Rabbit2.prototype.eats = false;
+// delete rabbit2.eats;
+delete Rabbit2.prototype.eats;
+
+console.log(rabbit2.eats); //
