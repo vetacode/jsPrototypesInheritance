@@ -411,3 +411,6 @@ let user = {
 user.sayHi = user.sayHi.defer(1000);
 
 user.sayHi();
+
+console.log(Array.prototype.__proto__ === Function.prototype);
+console.log(Array.prototype.__proto__ === Object.prototype);
