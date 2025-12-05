@@ -227,6 +227,7 @@ Use __proto__ to assign prototypes in a way that any property lookup will follow
 Answer the question: is it faster to get glasses as pockets.glasses or head.glasses? Benchmark if needed.
  */
 
+//Prototype chaining
 let head = {
   glasses: 1,
 };
@@ -246,6 +247,7 @@ let pockets = {
   money: 2000,
   __proto__: bed,
 };
+console.log(table.glasses); //1
 console.log(pockets.pen); // 3
 console.log(bed.glasses); // 1
 console.log(table.money); // undefined
